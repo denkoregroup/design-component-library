@@ -1,27 +1,52 @@
-# Design Component Library
+# Denkore Design Component Library
 
-Internal Denkore tooling for exploring and previewing website section designs before they're built out in the production stack (Next.js/Tailwind/shadcn via Claude Code).
+Internal shadcn-style component registry for Denkore Group. This is a Next.js app whose purpose is to serve component source code — not a deployed product itself.
 
-**This repo is for design reference, not production code.** Nothing here ships directly to a client site — sections that get approved here are rebuilt properly in the actual client repo.
+## What this is
 
-## Tools
+A custom [shadcn registry](https://ui.shadcn.com/docs/registry) — the same mechanism Tailark used. Blocks live here as real Tailwind/TypeScript source. Any client repo installs one with:
 
-### `/tools/velocity-blocks`
-Static component showcase — 26 marketing blocks across 10 categories (Heroes, Features, CTAs, Pricing, Navigation, Footers, Team, Logo Cloud, Code Demo, Content). Includes a theme switcher (3 color options, 3 font options) and copy-to-clipboard HTML export. Open `index.html` directly in a browser.
+```
+pnpm dlx shadcn add https://<deployed-url>/r/<block-name>.json
+```
 
-### `/tools/section-builder`
-Guided discovery tool — walks through structured questions per section type (currently Hero, Features, CTA) instead of a single vague "build me a site" prompt. Produces a live preview and exports self-contained HTML based on the answers. Open `index.html` directly in a browser.
+This copies the component's source directly into the client repo. No runtime dependency, no version to track — once installed, it's just that client's code, free to be customized per their design system.
 
-## Why section-by-section instead of whole-site generation
+## Why a registry instead of an npm package
 
-Vague, holistic prompts lose detail and produce generic results. Forcing specific questions per section (emotion, primary action, visual approach, etc.) surfaces intent that would otherwise get lost, and produces a more defensible, less "AI slop" result.
+Every client needs a genuinely different layout (never a template default — see Denkore's design principles). A shared npm package pushes toward reusing identical component instances, which fights that. A registry hands each client its own editable copy instead — fast starting point, zero constraint on customization, no coordination tax as the library grows.
 
-## Workflow
+## Structure
 
-1. Explore/demo a section design here (or in a Claude chat session) as a static HTML preview
-2. Get it approved as the visual direction
-3. Hand it to Claude Code as the reference for the actual production build in the client's repo — Claude Code does not build production sections from scratch off a vague prompt
+- `registry.json` — the index. Every block gets one entry here. This is the file that grows.
+- `registry/new-york/blocks/<name>/<name>.tsx` — actual block source (real Tailwind, not inline styles)
+- `public/tools/` — the two discovery tools used with clients before a block is built (see below); these are not registry items
+- `public/r/` — generated output (`pnpm run registry:build`), gitignored, rebuilt on every deploy
 
-## Status
+## Discovery tools
 
-Early-stage internal tool. Both tools are hardcoded React (via in-browser Babel) — not a build pipeline. No section types beyond Hero/Features/CTA yet in Section Builder.
+Two prototyping tools live at `/tools/*`, used during client discovery sessions — before a section becomes a real registry block:
+
+- **Velocity Blocks** (`/tools/velocity-blocks`) — static showcase of section options with a theme switcher, for browsing ideas
+- **Section Builder** (`/tools/section-builder`) — guided question flow (Hero, Features, CTA so far) that produces a live preview and exportable HTML based on client answers
+
+These output inline-style HTML prototypes, not registry-ready code. Once a design is approved with a client, it gets manually converted into a real `.tsx` component and added to `registry.json` — that conversion is the bridge between discovery and the registry.
+
+## Naming convention
+
+`<category>-<number>`, e.g. `hero-01`, `hero-02`, `features-grid-01`. Never overwritten — a revised design gets the next number, old numbers stay valid for repos that already installed them.
+
+## Adding a block
+
+1. Add the component under `registry/new-york/blocks/<name>/<name>.tsx`
+2. Add an entry to `registry.json`
+3. Run `pnpm run registry:build` to verify it compiles
+4. Open a PR
+
+## Local development
+
+```
+pnpm install
+pnpm run registry:build   # generates public/r/*.json from registry.json
+pnpm dev
+```
