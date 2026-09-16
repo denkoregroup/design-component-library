@@ -132,7 +132,7 @@ export default function Home() {
                   <div className="mb-3 text-sm text-muted-foreground">{item.description}</div>
                   <CopyInstallCommand name={name} />
                 </div>
-                <div className="overflow-auto bg-background">
+                <div className="light-scope overflow-auto">
                   {Preview ? <Preview /> : (
                     <div className="p-6 text-sm text-destructive">No preview registered for {name}</div>
                   )}
