@@ -1,7 +1,7 @@
 interface CTAEmailProps {
-  headline: string;
+  headline?: string;
   subheadline?: string;
-  buttonText: string;
+  buttonText?: string;
 }
 
 export default function CTAEmail({

@@ -1,8 +1,8 @@
 interface HeroAsymmetricProps {
-  headlineLine1: string;
-  headlineLine2: string;
+  headlineLine1?: string;
+  headlineLine2?: string;
   subheadline?: string;
-  ctaText: string;
+  ctaText?: string;
 }
 
 export default function HeroAsymmetric({

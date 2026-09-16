@@ -1,7 +1,7 @@
 interface HeroCenteredProps {
-  headline: string;
+  headline?: string;
   subheadline?: string;
-  ctaText: string;
+  ctaText?: string;
 }
 
 export default function HeroCentered({

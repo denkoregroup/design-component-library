@@ -1,7 +1,7 @@
 interface ContentSplitProps {
-  headline: string;
-  body: string;
-  ctaText: string;
+  headline?: string;
+  body?: string;
+  ctaText?: string;
 }
 
 export default function ContentSplit({

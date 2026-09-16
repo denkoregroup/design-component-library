@@ -1,8 +1,8 @@
 interface FeaturesAlternatingProps {
-  firstTitle: string;
-  firstBody: string;
-  secondTitle: string;
-  secondBody: string;
+  firstTitle?: string;
+  firstBody?: string;
+  secondTitle?: string;
+  secondBody?: string;
 }
 
 export default function FeaturesAlternating({
