@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "denkoregroup",
+  "homepage": "https://github.com/denkoregroup/design-component-library",
+  "items": [
+    {
+      "name": "hero-01",
+      "type": "registry:block",
+      "title": "Split Hero",
+      "description": "Two-column hero with headline, dual CTAs, and a gradient visual panel.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/hero-01/hero-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

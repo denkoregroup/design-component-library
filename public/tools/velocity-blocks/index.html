@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Blocks - Marketing UI Library</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Font Options (Avoiding Inter, Roboto, Open Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Crimson+Pro:wght@200;400;700;900&family=Work+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Theme variables - can be changed dynamically */
+      --theme-primary: #2dd4bf;
+      --theme-primary-dark: #14b8a6;
+      --theme-primary-light: #5eead4;
+      --theme-font: 'Outfit', sans-serif;
+      
+      /* UI System (Fixed) */
+      --ui-bg: #fafafa;
+      --ui-surface: #ffffff;
+      --ui-border: #e5e5e5;
+      --ui-text: #171717;
+      --ui-text-muted: #737373;
+      --ui-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--ui-bg);
+      color: var(--ui-text);
+      line-height: 1.5;
+    }
+
+    /* App Layout */
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--ui-surface);
+      border-right: 1px solid var(--ui-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 2rem 1.5rem;
+      border-bottom: 1px solid var(--ui-border);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      font-size: 0.875rem;
+      color: var(--ui-text-muted);
+    }
+
+    .theme-controls {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--ui-border);
+    }
+
+    .theme-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ui-text-muted);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .theme-select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--ui-border);
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      background: white;
+    }
+
+    .theme-swatches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .theme-swatch {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 0.375rem;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-swatch:hover {
+      transform: scale(1.05);
+    }
+
+    .theme-swatch.active {
+      border-color: var(--ui-text);
+      box-shadow: 0 0 0 2px var(--ui-bg);
+    }
+
+    .category-nav {
+      flex: 1;
+      padding: 1rem 0;
+    }
+
+    .category-btn {
+      width: 100%;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      text-align: left;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--ui-text-muted);
+    }
+
+    .category-btn:hover {
+      background: var(--ui-bg);
+      color: var(--ui-text);
+    }
+
+    .category-btn.active {
+      background: var(--ui-bg);
+      color: var(--ui-text);
+      border-left: 3px solid var(--theme-primary);
+    }
+
+    /* Main Content */
+    .main-content {
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .blocks-grid {
+      display: grid;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .block-card {
+      background: var(--ui-surface);
+      border: 1px solid var(--ui-border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: var(--ui-shadow);
+    }
+
+    .block-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--ui-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .block-info h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .block-info p {
+      font-size: 0.875rem;
+      color: var(--ui-text-muted);
+    }
+
+    .copy-btn {
+      padding: 0.5rem 1rem;
+      background: var(--theme-primary);
+      color: white;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--theme-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .block-preview {
+      padding: 2rem;
+      background: #fafafa;
+      min-height: 400px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      background: #171717;
+      color: white;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Block Styles - Applied to preview content */
+    .block-content {
+      font-family: var(--theme-font);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // Theme Configurations
+    const THEME_COLORS = [
+      { name: 'Teal', primary: '#2dd4bf', dark: '#14b8a6', light: '#5eead4' },
+      { name: 'Coral', primary: '#ff6b6b', dark: '#ee5a5a', light: '#ff8787' },
+      { name: 'Amber', primary: '#f59e0b', dark: '#d97706', light: '#fbbf24' }
+    ];
+
+    const THEME_FONTS = [
+      { name: 'Outfit', value: "'Outfit', sans-serif" },
+      { name: 'Crimson Pro', value: "'Crimson Pro', serif" },
+      { name: 'Work Sans', value: "'Work Sans', sans-serif" }
+    ];
+
+    // Block Categories
+    const CATEGORIES = [
+      'Heroes',
+      'Features', 
+      'CTAs',
+      'Pricing',
+      'Navigation',
+      'Footers',
+      'Team',
+      'Logo Cloud',
+      'Code Demo',
+      'Content'
+    ];
+
+    // Block Database
+    const BLOCKS = {
+      Heroes: [
+        {
+          id: 'hero-split',
+          title: 'Split Hero - Bold CTA',
+          description: 'Two-column layout with oversized headline and dual CTAs',
+          component: HeroSplit
+        },
+        {
+          id: 'hero-centered',
+          title: 'Centered Hero - Minimal',
+          description: 'Clean centered design with gradient background',
+          component: HeroCentered
+        },
+        {
+          id: 'hero-asymmetric',
+          title: 'Asymmetric Hero - Editorial',
+          description: 'Off-grid layout with large typography',
+          component: HeroAsymmetric
+        }
+      ],
+      Features: [
+        {
+          id: 'features-grid',
+          title: 'Icon Grid - Classic',
+          description: '3-column grid with icon cards',
+          component: FeaturesGrid
+        },
+        {
+          id: 'features-alternating',
+          title: 'Alternating Layout',
+          description: 'Image-text blocks that alternate sides',
+          component: FeaturesAlternating
+        },
+        {
+          id: 'features-bento',
+          title: 'Bento Grid - Modern',
+          description: 'Asymmetric grid with varied card sizes',
+          component: FeaturesBento
+        }
+      ],
+      CTAs: [
+        {
+          id: 'cta-email',
+          title: 'Email Capture - Gradient',
+          description: 'Full-width CTA with email input',
+          component: CTAEmail
+        },
+        {
+          id: 'cta-split',
+          title: 'Split CTA - Two Actions',
+          description: 'Side-by-side CTAs for different user paths',
+          component: CTASplit
+        },
+        {
+          id: 'cta-minimal',
+          title: 'Minimal CTA - Single Focus',
+          description: 'Clean single-button CTA with subtext',
+          component: CTAMinimal
+        }
+      ],
+      Pricing: [
+        {
+          id: 'pricing-cards',
+          title: '3-Tier Cards - Standard',
+          description: 'Three pricing tiers with feature lists',
+          component: PricingCards
+        },
+        {
+          id: 'pricing-toggle',
+          title: 'Toggle Pricing - Monthly/Annual',
+          description: 'Pricing with billing toggle',
+          component: PricingToggle
+        },
+        {
+          id: 'pricing-comparison',
+          title: 'Comparison Table',
+          description: 'Feature comparison across plans',
+          component: PricingComparison
+        }
+      ],
+      Navigation: [
+        {
+          id: 'nav-centered',
+          title: 'Centered Nav - Logo Middle',
+          description: 'Links split around centered logo',
+          component: NavCentered
+        },
+        {
+          id: 'nav-sidebar',
+          title: 'Logo Left - Classic',
+          description: 'Traditional left-aligned navigation',
+          component: NavSidebar
+        },
+        {
+          id: 'nav-mega',
+          title: 'Mega Menu - Dropdown',
+          description: 'Navigation with dropdown panels',
+          component: NavMega
+        }
+      ],
+      Footers: [
+        {
+          id: 'footer-columns',
+          title: 'Multi-Column - Comprehensive',
+          description: 'Four-column footer with links',
+          component: FooterColumns
+        },
+        {
+          id: 'footer-minimal',
+          title: 'Minimal - Single Row',
+          description: 'Simple footer with essentials',
+          component: FooterMinimal
+        },
+        {
+          id: 'footer-newsletter',
+          title: 'Newsletter Footer',
+          description: 'Footer with email signup',
+          component: FooterNewsletter
+        }
+      ],
+      Team: [
+        {
+          id: 'team-grid',
+          title: 'Team Grid - Photo Cards',
+          description: 'Grid of team member cards',
+          component: TeamGrid
+        },
+        {
+          id: 'team-compact',
+          title: 'Compact Team - List View',
+          description: 'Condensed team list with roles',
+          component: TeamCompact
+        }
+      ],
+      'Logo Cloud': [
+        {
+          id: 'logos-grid',
+          title: 'Logo Grid - Static',
+          description: 'Simple grid of client logos',
+          component: LogosGrid
+        },
+        {
+          id: 'logos-marquee',
+          title: 'Logo Marquee - Animated',
+          description: 'Scrolling logo carousel',
+          component: LogosMarquee
+        }
+      ],
+      'Code Demo': [
+        {
+          id: 'code-snippet',
+          title: 'Code Snippet - Syntax Highlight',
+          description: 'Code block with syntax highlighting',
+          component: CodeSnippet
+        },
+        {
+          id: 'code-terminal',
+          title: 'Terminal - Command Line',
+          description: 'Terminal-style code display',
+          component: CodeTerminal
+        }
+      ],
+      Content: [
+        {
+          id: 'content-split',
+          title: 'Text + Image Split',
+          description: 'Two-column content layout',
+          component: ContentSplit
+        },
+        {
+          id: 'content-cards',
+          title: 'Content Cards - Blog Style',
+          description: 'Card grid for articles/posts',
+          component: ContentCards
+        }
+      ]
+    };
+
+    // Main App Component
+    function App() {
+      const [activeCategory, setActiveCategory] = useState('Heroes');
+      const [themeColor, setThemeColor] = useState(THEME_COLORS[0]);
+      const [themeFont, setThemeFont] = useState(THEME_FONTS[0]);
+      const [showToast, setShowToast] = useState(false);
+
+      // Apply theme to CSS variables
+      useEffect(() => {
+        document.documentElement.style.setProperty('--theme-primary', themeColor.primary);
+        document.documentElement.style.setProperty('--theme-primary-dark', themeColor.dark);
+        document.documentElement.style.setProperty('--theme-primary-light', themeColor.light);
+        document.documentElement.style.setProperty('--theme-font', themeFont.value);
+      }, [themeColor, themeFont]);
+
+      const copyBlockHTML = (blockId, component) => {
+        // Create a temporary container
+        const tempContainer = document.createElement('div');
+        tempContainer.className = 'block-content';
+        
+        // Render the component
+        const root = ReactDOM.createRoot(tempContainer);
+        root.render(React.createElement(component));
+        
+        // Wait for render, then extract HTML
+        setTimeout(() => {
+          const html = generateExportHTML(tempContainer.innerHTML);
+          navigator.clipboard.writeText(html);
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 2000);
+          root.unmount();
+        }, 100);
+      };
+
+      const generateExportHTML = (blockHTML) => {
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=${themeFont.name.replace(' ', '+')}:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --theme-primary: ${themeColor.primary};
+      --theme-primary-dark: ${themeColor.dark};
+      --theme-primary-light: ${themeColor.light};
+      --theme-font: ${themeFont.value};
+    }
+    body { font-family: var(--theme-font); line-height: 1.5; }
+  </style>
+</head>
+<body>
+  ${blockHTML}
+</body>
+</html>`;
+      };
+
+      const currentBlocks = BLOCKS[activeCategory] || [];
+
+      return (
+        <div className="app-container">
+          <aside className="sidebar">
+            <div className="sidebar-header">
+              <div className="logo">Velocity Blocks</div>
+              <div className="tagline">Marketing UI Library</div>
+            </div>
+
+            <div className="theme-controls">
+              <label className="theme-label">Theme Color</label>
+              <div className="theme-swatches">
+                {THEME_COLORS.map(color => (
+                  <button
+                    key={color.name}
+                    className={`theme-swatch ${themeColor.name === color.name ? 'active' : ''}`}
+                    style={{ background: color.primary }}
+                    onClick={() => setThemeColor(color)}
+                    title={color.name}
+                  />
+                ))}
+              </div>
+
+              <label className="theme-label">Font Family</label>
+              <select
+                className="theme-select"
+                value={themeFont.name}
+                onChange={(e) => setThemeFont(THEME_FONTS.find(f => f.name === e.target.value))}
+              >
+                {THEME_FONTS.map(font => (
+                  <option key={font.name} value={font.name}>{font.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <nav className="category-nav">
+              {CATEGORIES.map(category => (
+                <button
+                  key={category}
+                  className={`category-btn ${activeCategory === category ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          <main className="main-content">
+            <div className="blocks-grid">
+              {currentBlocks.map(block => (
+                <div key={block.id} className="block-card">
+                  <div className="block-header">
+                    <div className="block-info">
+                      <h3>{block.title}</h3>
+                      <p>{block.description}</p>
+                    </div>
+                    <button
+                      className="copy-btn"
+                      onClick={() => copyBlockHTML(block.id, block.component)}
+                    >
+                      Copy HTML
+                    </button>
+                  </div>
+                  <div className="block-preview">
+                    <div className="block-content">
+                      <block.component />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </main>
+
+          <div className={`toast ${showToast ? 'show' : ''}`}>
+            ✓ HTML copied to clipboard!
+          </div>
+        </div>
+      );
+    }
+
+    // ============================================
+    // BLOCK COMPONENTS
+    // ============================================
+
+    // HEROES
+    function HeroSplit() {
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div>
+            <div style={{ fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--theme-primary)', marginBottom: '1rem', fontWeight: '600' }}>New Product</div>
+            <h1 style={{ fontSize: '3.5rem', fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem' }}>Ship faster with Velocity</h1>
+            <p style={{ fontSize: '1.25rem', color: '#666', marginBottom: '2rem', lineHeight: '1.6' }}>Production-ready marketing blocks that help you build distinctive landing pages in minutes, not days.</p>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button style={{ padding: '1rem 2rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>Get Started →</button>
+              <button style={{ padding: '1rem 2rem', background: 'transparent', color: '#333', border: '2px solid #ddd', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>View Demo</button>
+            </div>
+          </div>
+          <div style={{ height: '400px', background: 'linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark))', borderRadius: '1rem' }}></div>
+        </div>
+      );
+    }
+
+    function HeroCentered() {
+      return (
+        <div style={{ textAlign: 'center', padding: '6rem 2rem', background: 'linear-gradient(135deg, #f8f9fa, #e9ecef)', maxWidth: '800px', margin: '0 auto', borderRadius: '1rem' }}>
+          <h1 style={{ fontSize: '4rem', fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem' }}>Build products people love</h1>
+          <p style={{ fontSize: '1.25rem', color: '#666', marginBottom: '2.5rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}>Everything you need to create stunning marketing pages that convert.</p>
+          <button style={{ padding: '1.25rem 2.5rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1.1rem', fontWeight: '600', cursor: 'pointer' }}>Start Free Trial</button>
+        </div>
+      );
+    }
+
+    function HeroAsymmetric() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '700px' }}>
+            <h1 style={{ fontSize: '5rem', fontWeight: '200', lineHeight: '1', marginBottom: '2rem', letterSpacing: '-0.02em' }}>Distinctive<br/><strong style={{ fontWeight: '900' }}>by design</strong></h1>
+            <p style={{ fontSize: '1.5rem', color: '#666', marginBottom: '2rem', lineHeight: '1.5' }}>Break free from generic templates with marketing blocks that make your brand unforgettable.</p>
+            <button style={{ padding: '1rem 2rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>Explore Blocks →</button>
+          </div>
+        </div>
+      );
+    }
+
+    // FEATURES
+    function FeaturesGrid() {
+      const features = [
+        { icon: '⚡', title: 'Lightning Fast', desc: 'Optimized for performance' },
+        { icon: '🎨', title: 'Fully Customizable', desc: 'Theme with CSS variables' },
+        { icon: '📱', title: 'Mobile First', desc: 'Responsive by default' }
+      ];
+
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {features.map((f, i) => (
+              <div key={i} style={{ padding: '2rem', background: 'white', border: '1px solid #e5e5e5', borderRadius: '0.5rem' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>{f.icon}</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>{f.title}</h3>
+                <p style={{ color: '#666' }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function FeaturesAlternating() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', marginBottom: '4rem' }}>
+            <div>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem' }}>Built for speed</h2>
+              <p style={{ fontSize: '1.125rem', color: '#666', lineHeight: '1.6' }}>Every component is optimized for performance with minimal CSS and zero dependencies.</p>
+            </div>
+            <div style={{ height: '300px', background: 'linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary))', borderRadius: '0.5rem' }}></div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+            <div style={{ height: '300px', background: 'linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark))', borderRadius: '0.5rem' }}></div>
+            <div>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem' }}>Designed to convert</h2>
+              <p style={{ fontSize: '1.125rem', color: '#666', lineHeight: '1.6' }}>Each block is crafted with conversion in mind, using proven UI patterns.</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function FeaturesBento() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gridTemplateRows: 'auto auto', gap: '1rem' }}>
+            <div style={{ gridRow: 'span 2', padding: '3rem', background: 'linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark))', borderRadius: '1rem', color: 'white' }}>
+              <h3 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1rem' }}>Production Ready</h3>
+              <p style={{ fontSize: '1.25rem', opacity: '0.95' }}>All blocks are tested and ready to ship</p>
+            </div>
+            <div style={{ padding: '2rem', background: 'white', border: '1px solid #e5e5e5', borderRadius: '1rem' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>✓</div>
+              <h4 style={{ fontWeight: '700', marginBottom: '0.5rem' }}>Accessible</h4>
+              <p style={{ fontSize: '0.875rem', color: '#666' }}>WCAG compliant</p>
+            </div>
+            <div style={{ padding: '2rem', background: 'white', border: '1px solid #e5e5e5', borderRadius: '1rem' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🚀</div>
+              <h4 style={{ fontWeight: '700', marginBottom: '0.5rem' }}>Fast</h4>
+              <p style={{ fontSize: '0.875rem', color: '#666' }}>Optimized CSS</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // CTAs
+    function CTAEmail() {
+      return (
+        <div style={{ padding: '4rem 2rem', background: 'linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark))', textAlign: 'center', borderRadius: '1rem' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: '800', color: 'white', marginBottom: '1rem' }}>Ready to get started?</h2>
+          <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.9)', marginBottom: '2rem' }}>Join thousands of teams building with Velocity</p>
+          <div style={{ display: 'flex', gap: '1rem', maxWidth: '500px', margin: '0 auto' }}>
+            <input type="email" placeholder="your@email.com" style={{ flex: 1, padding: '1rem', border: 'none', borderRadius: '0.5rem', fontSize: '1rem' }} />
+            <button style={{ padding: '1rem 2rem', background: 'white', color: 'var(--theme-primary)', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>Get Access</button>
+          </div>
+        </div>
+      );
+    }
+
+    function CTASplit() {
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, borderRadius: '1rem', overflow: 'hidden', border: '1px solid #e5e5e5' }}>
+          <div style={{ padding: '3rem', background: 'white' }}>
+            <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '1rem' }}>For Individuals</h3>
+            <p style={{ color: '#666', marginBottom: '2rem' }}>Start building today with our free plan</p>
+            <button style={{ padding: '1rem 2rem', background: 'transparent', color: 'var(--theme-primary)', border: '2px solid var(--theme-primary)', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer', width: '100%' }}>Start Free</button>
+          </div>
+          <div style={{ padding: '3rem', background: 'var(--theme-primary)', color: 'white' }}>
+            <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '1rem' }}>For Teams</h3>
+            <p style={{ opacity: '0.9', marginBottom: '2rem' }}>Unlock advanced features and collaboration</p>
+            <button style={{ padding: '1rem 2rem', background: 'white', color: 'var(--theme-primary)', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer', width: '100%' }}>Contact Sales</button>
+          </div>
+        </div>
+      );
+    }
+
+    function CTAMinimal() {
+      return (
+        <div style={{ padding: '4rem 2rem', textAlign: 'center', background: '#f8f9fa', borderRadius: '1rem' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem' }}>Start your free trial</h2>
+          <p style={{ fontSize: '1.125rem', color: '#666', marginBottom: '2rem' }}>No credit card required • 14-day trial</p>
+          <button style={{ padding: '1rem 2.5rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1.1rem', fontWeight: '600', cursor: 'pointer' }}>Try it Free</button>
+        </div>
+      );
+    }
+
+    // PRICING
+    function PricingCards() {
+      const plans = [
+        { name: 'Starter', price: '$0', features: ['20 blocks', 'Basic support', 'Personal use'] },
+        { name: 'Pro', price: '$29', features: ['All blocks', 'Priority support', 'Commercial license'], featured: true },
+        { name: 'Team', price: '$99', features: ['Everything in Pro', 'Team collaboration', 'Custom components'] }
+      ];
+
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {plans.map((plan, i) => (
+              <div key={i} style={{ padding: '2rem', background: plan.featured ? 'var(--theme-primary)' : 'white', border: plan.featured ? 'none' : '1px solid #e5e5e5', borderRadius: '0.5rem', color: plan.featured ? 'white' : '#333', transform: plan.featured ? 'scale(1.05)' : 'scale(1)' }}>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>{plan.name}</h3>
+                <div style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '1rem' }}>{plan.price}</div>
+                <ul style={{ listStyle: 'none', marginBottom: '2rem' }}>
+                  {plan.features.map((f, j) => (
+                    <li key={j} style={{ padding: '0.5rem 0', borderBottom: `1px solid ${plan.featured ? 'rgba(255,255,255,0.2)' : '#f0f0f0'}` }}>→ {f}</li>
+                  ))}
+                </ul>
+                <button style={{ padding: '1rem', background: plan.featured ? 'white' : 'var(--theme-primary)', color: plan.featured ? 'var(--theme-primary)' : 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer', width: '100%' }}>Get Started</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function PricingToggle() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ display: 'inline-flex', gap: '0.5rem', padding: '0.25rem', background: '#f0f0f0', borderRadius: '0.5rem', marginBottom: '3rem' }}>
+            <button style={{ padding: '0.5rem 1.5rem', background: 'white', border: 'none', borderRadius: '0.375rem', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}>Monthly</button>
+            <button style={{ padding: '0.5rem 1.5rem', background: 'transparent', border: 'none', borderRadius: '0.375rem', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer', color: '#666' }}>Annual</button>
+          </div>
+          <div style={{ padding: '3rem', background: 'white', border: '1px solid #e5e5e5', borderRadius: '1rem' }}>
+            <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '1rem' }}>Pro Plan</h3>
+            <div style={{ fontSize: '4rem', fontWeight: '800', marginBottom: '2rem' }}>$29<span style={{ fontSize: '1.5rem', fontWeight: '400', color: '#666' }}>/mo</span></div>
+            <button style={{ padding: '1rem 2.5rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>Start Trial</button>
+          </div>
+        </div>
+      );
+    }
+
+    function PricingComparison() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1000px', margin: '0 auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid #e5e5e5' }}>
+                <th style={{ padding: '1rem', textAlign: 'left' }}>Feature</th>
+                <th style={{ padding: '1rem', textAlign: 'center' }}>Starter</th>
+                <th style={{ padding: '1rem', textAlign: 'center' }}>Pro</th>
+                <th style={{ padding: '1rem', textAlign: 'center' }}>Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              {['20 Blocks', 'All Blocks', 'Priority Support', 'Commercial License', 'Team Collaboration'].map((feature, i) => (
+                <tr key={i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                  <td style={{ padding: '1rem' }}>{feature}</td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>{i < 1 ? '✓' : '—'}</td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>{i < 4 ? '✓' : '—'}</td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>✓</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+
+    // NAVIGATION
+    function NavCentered() {
+      return (
+        <nav style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e5e5e5', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Product</a>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Features</a>
+          </div>
+          <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>LOGO</div>
+          <div style={{ display: 'flex', gap: '2rem', flex: 1, justifyContent: 'flex-end' }}>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Pricing</a>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Docs</a>
+          </div>
+        </nav>
+      );
+    }
+
+    function NavSidebar() {
+      return (
+        <nav style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e5e5e5', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>Velocity</div>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Features</a>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Pricing</a>
+            <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500' }}>Docs</a>
+            <button style={{ padding: '0.5rem 1.5rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.375rem', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}>Sign In</button>
+          </div>
+        </nav>
+      );
+    }
+
+    function NavMega() {
+      return (
+        <nav style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #e5e5e5', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>Brand</div>
+            <div style={{ display: 'flex', gap: '2rem' }}>
+              <div style={{ position: 'relative' }}>
+                <button style={{ background: 'transparent', border: 'none', padding: '0.5rem 1rem', fontSize: '0.9375rem', fontWeight: '500', cursor: 'pointer' }}>Products ▾</button>
+              </div>
+              <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500', padding: '0.5rem 1rem' }}>Company</a>
+              <a href="#" style={{ color: '#333', textDecoration: 'none', fontWeight: '500', padding: '0.5rem 1rem' }}>Resources</a>
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    // FOOTERS
+    function FooterColumns() {
+      return (
+        <footer style={{ padding: '4rem 2rem', background: '#1a1a1a', color: 'white' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem' }}>
+            <div>
+              <div style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '1rem' }}>Velocity</div>
+              <p style={{ color: '#999', fontSize: '0.875rem' }}>Build faster with distinctive UI blocks</p>
+            </div>
+            <div>
+              <h4 style={{ fontWeight: '700', marginBottom: '1rem', fontSize: '0.875rem' }}>Product</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Features</a>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Pricing</a>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Changelog</a>
+              </div>
+            </div>
+            <div>
+              <h4 style={{ fontWeight: '700', marginBottom: '1rem', fontSize: '0.875rem' }}>Company</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>About</a>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Blog</a>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Careers</a>
+              </div>
+            </div>
+            <div>
+              <h4 style={{ fontWeight: '700', marginBottom: '1rem', fontSize: '0.875rem' }}>Legal</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Privacy</a>
+                <a href="#" style={{ color: '#999', textDecoration: 'none', fontSize: '0.875rem' }}>Terms</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    function FooterMinimal() {
+      return (
+        <footer style={{ padding: '2rem', borderTop: '1px solid #e5e5e5', textAlign: 'center' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ color: '#666', fontSize: '0.875rem' }}>© 2024 Velocity. All rights reserved.</div>
+            <div style={{ display: 'flex', gap: '2rem' }}>
+              <a href="#" style={{ color: '#666', textDecoration: 'none', fontSize: '0.875rem' }}>Privacy</a>
+              <a href="#" style={{ color: '#666', textDecoration: 'none', fontSize: '0.875rem' }}>Terms</a>
+              <a href="#" style={{ color: '#666', textDecoration: 'none', fontSize: '0.875rem' }}>Contact</a>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    function FooterNewsletter() {
+      return (
+        <footer style={{ padding: '4rem 2rem', background: '#f8f9fa' }}>
+          <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>Stay Updated</h3>
+            <p style={{ color: '#666', marginBottom: '2rem' }}>Get the latest blocks and updates delivered to your inbox</p>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+              <input type="email" placeholder="your@email.com" style={{ flex: 1, padding: '0.75rem', border: '1px solid #e5e5e5', borderRadius: '0.375rem', fontSize: '0.875rem' }} />
+              <button style={{ padding: '0.75rem 1.5rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.375rem', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}>Subscribe</button>
+            </div>
+            <div style={{ color: '#999', fontSize: '0.75rem' }}>© 2024 Velocity. All rights reserved.</div>
+          </div>
+        </footer>
+      );
+    }
+
+    // TEAM
+    function TeamGrid() {
+      const team = [
+        { name: 'Alex Chen', role: 'CEO & Founder' },
+        { name: 'Sarah Kim', role: 'Head of Design' },
+        { name: 'Marcus Johnson', role: 'Lead Engineer' },
+        { name: 'Emily Rodriguez', role: 'Product Manager' }
+      ];
+
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+            {team.map((member, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ width: '150px', height: '150px', margin: '0 auto 1rem', background: 'linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary))', borderRadius: '50%' }}></div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.25rem' }}>{member.name}</h3>
+                <p style={{ color: '#666', fontSize: '0.875rem' }}>{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function TeamCompact() {
+      const team = [
+        { name: 'Alex Chen', role: 'CEO & Founder', email: 'alex@company.com' },
+        { name: 'Sarah Kim', role: 'Head of Design', email: 'sarah@company.com' },
+        { name: 'Marcus Johnson', role: 'Lead Engineer', email: 'marcus@company.com' }
+      ];
+
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
+          {team.map((member, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.5rem', borderBottom: i < team.length - 1 ? '1px solid #e5e5e5' : 'none' }}>
+              <div style={{ width: '60px', height: '60px', background: 'linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary))', borderRadius: '50%', flexShrink: 0 }}></div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: '700', marginBottom: '0.25rem' }}>{member.name}</h3>
+                <p style={{ color: '#666', fontSize: '0.875rem' }}>{member.role}</p>
+              </div>
+              <a href={`mailto:${member.email}`} style={{ color: 'var(--theme-primary)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '500' }}>Contact</a>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // LOGO CLOUD
+    function LogosGrid() {
+      const logos = ['ACME', 'APEX', 'ZENITH', 'NOVA', 'PULSE', 'VERTEX'];
+
+      return (
+        <div style={{ padding: '4rem 2rem', background: '#f8f9fa' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#666', marginBottom: '2rem' }}>Trusted by leading companies</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '3rem', alignItems: 'center' }}>
+              {logos.map((logo, i) => (
+                <div key={i} style={{ fontSize: '1.5rem', fontWeight: '800', color: '#999' }}>{logo}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function LogosMarquee() {
+      const logos = ['BRAND', 'CORP', 'LABS', 'TECH', 'SYSTEMS', 'DIGITAL', 'WORKS', 'STUDIO'];
+
+      return (
+        <div style={{ padding: '3rem 0', background: '#f8f9fa', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', gap: '4rem', animation: 'scroll 20s linear infinite' }}>
+            {[...logos, ...logos].map((logo, i) => (
+              <div key={i} style={{ fontSize: '1.25rem', fontWeight: '800', color: '#999', whiteSpace: 'nowrap', flexShrink: 0 }}>{logo}</div>
+            ))}
+          </div>
+          <style>{`@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+        </div>
+      );
+    }
+
+    // CODE DEMO
+    function CodeSnippet() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ background: '#1a1a1a', padding: '2rem', borderRadius: '0.5rem', fontFamily: 'monospace', fontSize: '0.875rem', color: '#e5e5e5', overflow: 'auto' }}>
+            <div style={{ marginBottom: '1rem', color: '#999' }}>// Install Velocity Blocks</div>
+            <div style={{ color: '#5eead4' }}>npm install <span style={{ color: '#fbbf24' }}>velocity-blocks</span></div>
+          </div>
+        </div>
+      );
+    }
+
+    function CodeTerminal() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ background: '#0d1117', padding: '1rem', borderRadius: '0.5rem 0.5rem 0 0', borderBottom: '1px solid #30363d' }}>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div style={{ width: '12px', height: '12px', background: '#ff5f56', borderRadius: '50%' }}></div>
+              <div style={{ width: '12px', height: '12px', background: '#ffbd2e', borderRadius: '50%' }}></div>
+              <div style={{ width: '12px', height: '12px', background: '#27c93f', borderRadius: '50%' }}></div>
+            </div>
+          </div>
+          <div style={{ background: '#0d1117', padding: '2rem', borderRadius: '0 0 0.5rem 0.5rem', fontFamily: 'monospace', fontSize: '0.875rem', color: '#e5e5e5' }}>
+            <div style={{ marginBottom: '0.5rem' }}>
+              <span style={{ color: '#7ee787' }}>$</span> velocity init my-project
+            </div>
+            <div style={{ color: '#8b949e' }}>✓ Created project in ./my-project</div>
+          </div>
+        </div>
+      );
+    }
+
+    // CONTENT
+    function ContentSplit() {
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+            <div style={{ height: '400px', background: 'linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary))', borderRadius: '0.5rem' }}></div>
+            <div>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem' }}>Built for modern teams</h2>
+              <p style={{ fontSize: '1.125rem', color: '#666', lineHeight: '1.7', marginBottom: '1.5rem' }}>Every component is crafted with attention to detail and optimized for performance. Start building faster today.</p>
+              <button style={{ padding: '1rem 2rem', background: 'var(--theme-primary)', color: 'white', border: 'none', borderRadius: '0.5rem', fontSize: '1rem', fontWeight: '600', cursor: 'pointer' }}>Learn More →</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ContentCards() {
+      const articles = [
+        { title: 'Getting Started Guide', date: 'Mar 15, 2024', desc: 'Learn the basics of using Velocity Blocks in your projects' },
+        { title: 'Design System Tips', date: 'Mar 10, 2024', desc: 'Best practices for building consistent interfaces' },
+        { title: 'Performance Optimization', date: 'Mar 5, 2024', desc: 'How to keep your pages loading fast' }
+      ];
+
+      return (
+        <div style={{ padding: '4rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {articles.map((article, i) => (
+              <article key={i} style={{ background: 'white', border: '1px solid #e5e5e5', borderRadius: '0.5rem', overflow: 'hidden' }}>
+                <div style={{ height: '200px', background: 'linear-gradient(135deg, var(--theme-primary-light), var(--theme-primary))' }}></div>
+                <div style={{ padding: '1.5rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: '0.5rem' }}>{article.date}</div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.5rem' }}>{article.title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1rem' }}>{article.desc}</p>
+                  <a href="#" style={{ color: 'var(--theme-primary)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '600' }}>Read More →</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Render App
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
