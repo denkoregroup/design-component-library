@@ -1,8 +1,8 @@
 interface HeroSplitProps {
   eyebrow?: string;
-  headline: string;
+  headline?: string;
   subheadline?: string;
-  primaryCtaText: string;
+  primaryCtaText?: string;
   secondaryCtaText?: string;
 }
 

@@ -14,6 +14,306 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "hero-02",
+      "type": "registry:block",
+      "title": "Centered Hero",
+      "description": "Clean centered hero with gradient background.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/hero-02/hero-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "hero-03",
+      "type": "registry:block",
+      "title": "Asymmetric Hero",
+      "description": "Off-grid editorial hero with large display typography.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/hero-03/hero-03.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "features-grid-01",
+      "type": "registry:block",
+      "title": "Icon Grid Features",
+      "description": "Three-column feature grid with icon cards.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/features-grid-01/features-grid-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "features-alternating-01",
+      "type": "registry:block",
+      "title": "Alternating Features",
+      "description": "Image-text feature blocks that alternate sides.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/features-alternating-01/features-alternating-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "features-bento-01",
+      "type": "registry:block",
+      "title": "Bento Grid Features",
+      "description": "Asymmetric bento-style feature grid with varied card sizes.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/features-bento-01/features-bento-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cta-email-01",
+      "type": "registry:block",
+      "title": "Email Capture CTA",
+      "description": "Full-width gradient CTA with email input.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/cta-email-01/cta-email-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cta-split-01",
+      "type": "registry:block",
+      "title": "Split CTA",
+      "description": "Two-path CTA for individuals vs. teams.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/cta-split-01/cta-split-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "cta-minimal-01",
+      "type": "registry:block",
+      "title": "Minimal CTA",
+      "description": "Clean single-button CTA with subtext.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/cta-minimal-01/cta-minimal-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "pricing-01",
+      "type": "registry:block",
+      "title": "Pricing Cards",
+      "description": "Three-tier pricing cards with feature lists.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/pricing-01/pricing-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "pricing-02",
+      "type": "registry:block",
+      "title": "Pricing Toggle",
+      "description": "Single-plan pricing with monthly/annual toggle UI.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/pricing-02/pricing-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "pricing-03",
+      "type": "registry:block",
+      "title": "Pricing Comparison",
+      "description": "Feature comparison table across three plans.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/pricing-03/pricing-03.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "nav-01",
+      "type": "registry:block",
+      "title": "Centered Nav",
+      "description": "Navigation with logo centered, links split on either side.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/nav-01/nav-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "nav-02",
+      "type": "registry:block",
+      "title": "Classic Left Nav",
+      "description": "Traditional left-aligned logo with sign-in CTA.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/nav-02/nav-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "nav-03",
+      "type": "registry:block",
+      "title": "Mega Menu Nav",
+      "description": "Navigation with a dropdown-style trigger.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/nav-03/nav-03.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "footer-01",
+      "type": "registry:block",
+      "title": "Multi-Column Footer",
+      "description": "Four-column footer with grouped links.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/footer-01/footer-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "footer-02",
+      "type": "registry:block",
+      "title": "Minimal Footer",
+      "description": "Single-row footer with copyright and essential links.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/footer-02/footer-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "footer-03",
+      "type": "registry:block",
+      "title": "Newsletter Footer",
+      "description": "Footer with email signup form.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/footer-03/footer-03.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "team-01",
+      "type": "registry:block",
+      "title": "Team Grid",
+      "description": "Grid of team member photo cards.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/team-01/team-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "team-02",
+      "type": "registry:block",
+      "title": "Compact Team List",
+      "description": "Condensed team list with roles and contact links.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/team-02/team-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logos-01",
+      "type": "registry:block",
+      "title": "Logo Grid",
+      "description": "Static grid of client/partner logos.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/logos-01/logos-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logos-02",
+      "type": "registry:block",
+      "title": "Logo Marquee",
+      "description": "Continuously scrolling animated logo carousel.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/logos-02/logos-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "code-01",
+      "type": "registry:block",
+      "title": "Code Snippet",
+      "description": "Simple syntax-highlighted install command block.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/code-01/code-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "code-02",
+      "type": "registry:block",
+      "title": "Terminal Demo",
+      "description": "Terminal-style command line display with window controls.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/code-02/code-02.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "content-01",
+      "type": "registry:block",
+      "title": "Content Split",
+      "description": "Two-column text and image content layout.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/content-01/content-01.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "content-02",
+      "type": "registry:block",
+      "title": "Content Cards",
+      "description": "Blog-style article card grid.",
+      "files": [
+        {
+          "path": "registry/new-york/blocks/content-02/content-02.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
