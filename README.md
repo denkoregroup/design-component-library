@@ -7,7 +7,7 @@ Internal shadcn-style component registry for Denkore Group. This is a Next.js ap
 A custom [shadcn registry](https://ui.shadcn.com/docs/registry) — the same mechanism Tailark used. Blocks live here as real Tailwind/TypeScript source. Any client repo installs one with:
 
 ```
-pnpm dlx shadcn add https://<deployed-url>/r/<block-name>.json
+pnpm dlx shadcn add https://design-component-library.vercel.app/r/<block-name>.json
 ```
 
 This copies the component's source directly into the client repo. No runtime dependency, no version to track — once installed, it's just that client's code, free to be customized per their design system.
@@ -50,3 +50,7 @@ pnpm install
 pnpm run registry:build   # generates public/r/*.json from registry.json
 pnpm dev
 ```
+
+## Working with AI agents
+
+This repo targets a version of Next.js with breaking changes from what most AI models were trained on. `AGENTS.md` (imported by `CLAUDE.md`) tells coding agents to read the relevant guide in `node_modules/next/dist/docs/` before writing any code, and to heed deprecation notices. That block is written and re-added by `next dev`, so commit it rather than removing it.
