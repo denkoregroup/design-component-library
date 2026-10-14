@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import registry from "@/registry.json";
 import { CopyInstallCommand } from "@/components/copy-install-command";
 
@@ -78,21 +79,61 @@ const itemsByName = Object.fromEntries(registry.items.map((item) => [item.name, 
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].name);
+  const [navOpen, setNavOpen] = useState(false);
   const category = CATEGORIES.find((c) => c.name === activeCategory)!;
+
+  const selectCategory = (name: string) => {
+    setActiveCategory(name);
+    setNavOpen(false); // picking a category is the end goal of opening the nav - close it
+  };
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-64 shrink-0 border-r bg-card">
-        <div className="border-b px-6 py-6">
-          <div className="text-lg font-bold">Denkore Registry</div>
-          <div className="text-xs text-muted-foreground">Internal component library</div>
+      {/* Mobile top bar - only shown below lg, where the sidebar is hidden by default */}
+      <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between border-b bg-card px-4 py-3 lg:hidden">
+        <div className="text-sm font-bold">Denkore Registry</div>
+        <button
+          onClick={() => setNavOpen(true)}
+          aria-label="Open categories"
+          className="rounded-md p-2 text-muted-foreground hover:bg-muted"
+        >
+          <Menu className="size-5" />
+        </button>
+      </div>
+
+      {/* Backdrop - only rendered while the mobile drawer is open */}
+      {navOpen && (
+        <div
+          onClick={() => setNavOpen(false)}
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+        />
+      )}
+
+      <aside
+        className={
+          (navOpen ? "translate-x-0" : "-translate-x-full") +
+          " fixed inset-y-0 left-0 z-50 w-64 shrink-0 overflow-y-auto border-r bg-card transition-transform duration-200 ease-in-out lg:static lg:translate-x-0"
+        }
+      >
+        <div className="flex items-center justify-between border-b px-6 py-6">
+          <div>
+            <div className="text-lg font-bold">Denkore Registry</div>
+            <div className="text-xs text-muted-foreground">Internal component library</div>
+          </div>
+          <button
+            onClick={() => setNavOpen(false)}
+            aria-label="Close categories"
+            className="rounded-md p-1 text-muted-foreground hover:bg-muted lg:hidden"
+          >
+            <X className="size-5" />
+          </button>
         </div>
 
         <nav className="flex flex-col py-2">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.name}
-              onClick={() => setActiveCategory(cat.name)}
+              onClick={() => selectCategory(cat.name)}
               className={
                 cat.name === activeCategory
                   ? "border-l-2 border-primary bg-muted px-6 py-2.5 text-left text-sm font-medium"
@@ -119,7 +160,7 @@ export default function Home() {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto pt-14 lg:pt-0">
         <div className="flex flex-col gap-10 p-8">
           <h1 className="text-2xl font-bold">{category.name}</h1>
           {category.blocks.map((name) => {
